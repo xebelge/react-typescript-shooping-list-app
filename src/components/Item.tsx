@@ -2,8 +2,8 @@ import React from 'react';
 
 export interface ItemProps {
     name: string;
-    quantity?: number;
-    price?: number;
+    quantity: number;
+    price: number;
 }
 
 const Item: React.FC<ItemProps> = ({ name, quantity, price }) => {
