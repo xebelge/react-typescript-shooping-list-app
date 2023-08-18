@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
     const [categories, setCategories] = useState<string[]>(initialCategories);
     const [notification, setNotification] = useState<string | null>(null);
     const [newItem, setNewItem] = useState<ItemProps>({ name: '', quantity: 0, price: 0 });
-
+    const [cartItems, setCartItems] = useState<ItemProps[]>([]);
 
     useEffect(() => {
         loadFromLocalStorage();
@@ -80,6 +80,11 @@ const HomePage: React.FC = () => {
         if (savedFavorites) setFavoriteItems(savedFavorites);
     };
 
+    const handleAddToCart = (item: ItemProps): void => {
+        setCartItems([...cartItems, item]);
+        setNotification("Item added to cart.");
+    }
+
     return (
         <div className="home-page">
             <h1>Targeted Shopping List</h1>
@@ -91,7 +96,22 @@ const HomePage: React.FC = () => {
                 onRemoveCategory={handleRemoveCategory}
             />
             <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} />
-            <ItemList items={items} onAddFavorite={handleAddFavorite} onRemove={handleRemoveItem} />
+            <ItemList
+                items={items}
+                onAddFavorite={handleAddFavorite}
+                onRemove={handleRemoveItem}
+                onAddToCart={handleAddToCart} 
+            />
+            <div className="cart">
+                <h2>Cart</h2>
+                <ul>
+                    {cartItems.map((item, index) => (
+                        <li key={index}>
+                            {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}
+                        </li>
+                    ))}
+                </ul>
+            </div>
             <div>
                 <h2>Add New Item</h2>
                 <input
@@ -126,6 +146,6 @@ const HomePage: React.FC = () => {
             </div>
         </div>
     );
-};
+}
 
 export default HomePage;
