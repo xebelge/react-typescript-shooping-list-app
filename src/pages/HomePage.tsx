@@ -18,6 +18,7 @@ const HomePage: React.FC = () => {
     const [favoriteItems, setFavoriteItems] = useState<ItemProps[]>([]);
     const [recentItems, setRecentItems] = useState<ItemProps[]>([]);
     const [notification, setNotification] = useState<string | null>(null);
+    const [newItem, setNewItem] = useState<ItemProps>({ name: '', quantity: 0, price: 0 });
 
     useEffect(() => {
         loadFromLocalStorage();
@@ -27,6 +28,15 @@ const HomePage: React.FC = () => {
         setFavoriteItems([...favoriteItems, item]);
         setNotification("Item added to favorites.");
     };
+
+    const handleAddItem = (): void => {
+        if (newItem.name !== "") {
+            setItems([...items, newItem]);
+            setNotification("Item added.");
+            // Reset newItem after adding
+            setNewItem({ name: '', quantity: 0, price: 0 });
+        }
+    }
 
     const handleAddRecent = (item: ItemProps): void => {
         setRecentItems([item, ...recentItems.slice(0, 4)]);
@@ -66,6 +76,13 @@ const HomePage: React.FC = () => {
             <CategoryList categories={initialCategories} />
             <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} />
             <ItemList items={items} onAddFavorite={handleAddFavorite} onRemove={handleRemoveItem} />
+            <div>
+                <h2>Add New Item</h2>
+                <input type='text' placeholder='Enter item name' value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} />
+                <input type='text' placeholder='Enter item quantity' value={newItem.quantity} onChange={(e) => setNewItem({ ...newItem, quantity: parseInt(e.target.value) })} />
+                <input type='text' placeholder='Enter item price' value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })} />
+                <button onClick={handleAddItem}>Add Item</button>
+            </div>
         </div>
     );
 };
