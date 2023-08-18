@@ -100,17 +100,19 @@ const HomePage: React.FC = () => {
                 items={items}
                 onAddFavorite={handleAddFavorite}
                 onRemove={handleRemoveItem}
-                onAddToCart={handleAddToCart} 
+                onAddToCart={handleAddToCart}
             />
             <div className="cart">
                 <h2>Cart</h2>
                 <ul>
                     {cartItems.map((item, index) => (
                         <li key={index}>
-                            {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}
+                            {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)} -
+                            Total Price: ${(item.quantity * item.price).toFixed(2)}
                         </li>
                     ))}
                 </ul>
+                <p>Overall Price: ${cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}</p>
             </div>
             <div>
                 <h2>Add New Item</h2>
