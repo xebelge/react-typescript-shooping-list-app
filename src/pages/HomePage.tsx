@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ItemList from '../components/ItemList';
 import CategoryList from '../components/CategoryList';
 import FavoritesList from '../components/FavoritesList';
-import RecentItemsList from '../components/RecentItemsList';
 import Notification from '../components/Notification';
 import { getItem, setItem } from '../utils/storage';
 import { ItemProps } from 'components/Item';
@@ -31,12 +30,6 @@ const HomePage: React.FC = () => {
 
     const handleAddRecent = (item: ItemProps): void => {
         setRecentItems([item, ...recentItems.slice(0, 4)]);
-    };
-
-    const handleAddItem = (item: ItemProps): void => {
-        setItems([...items, item]);
-        handleAddRecent(item);
-        setNotification("Item added.");
     };
 
     const handleRemoveFavorite = (index: number): void => {
@@ -72,7 +65,6 @@ const HomePage: React.FC = () => {
             <Notification message={notification || ''} type={notification ? 'success' : 'error'} />
             <CategoryList categories={initialCategories} />
             <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} />
-            <RecentItemsList recentItems={recentItems} />
             <ItemList items={items} onAddFavorite={handleAddFavorite} onRemove={handleRemoveItem} />
         </div>
     );
