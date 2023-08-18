@@ -25,8 +25,12 @@ const HomePage: React.FC = () => {
     }, []);
 
     const handleAddFavorite = (item: ItemProps): void => {
-        setFavoriteItems([...favoriteItems, item]);
-        setNotification("Item added to favorites.");
+        if (!favoriteItems.some(favItem => favItem.name === item.name)) {
+            setFavoriteItems([...favoriteItems, item]);
+            setNotification("Item added to favorites.");
+        } else {
+            setNotification("Item is already in favorites.");
+        }
     };
 
     const handleAddItem = (): void => {
@@ -38,10 +42,6 @@ const HomePage: React.FC = () => {
         }
     }
 
-    const handleAddRecent = (item: ItemProps): void => {
-        setRecentItems([item, ...recentItems.slice(0, 4)]);
-    };
-
     const handleRemoveFavorite = (index: number): void => {
         const updatedFavorites = favoriteItems.filter((_, i) => i !== index);
         setFavoriteItems(updatedFavorites);
@@ -51,6 +51,11 @@ const HomePage: React.FC = () => {
     const handleRemoveItem = (index: number): void => {
         const updatedItems = items.filter((_, i) => i !== index);
         setItems(updatedItems);
+
+        // Remove item from favorites if it was removed from list
+        const updatedFavorites = favoriteItems.filter(favItem => favItem.name !== items[index].name);
+        setFavoriteItems(updatedFavorites);
+
         setNotification('Item removed.');
     };
 
