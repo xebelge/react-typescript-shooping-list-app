@@ -39,6 +39,8 @@ const HomePage: React.FC = () => {
             setNotification("Item added.");
             // Reset newItem after adding
             setNewItem({ name: '', quantity: 0, price: 0 });
+        } else {
+            setNotification('Please fill in all fields and enter valid values.');
         }
     }
 
@@ -83,9 +85,16 @@ const HomePage: React.FC = () => {
             <ItemList items={items} onAddFavorite={handleAddFavorite} onRemove={handleRemoveItem} />
             <div>
                 <h2>Add New Item</h2>
-                <input type='text' placeholder='Enter item name' value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} />
-                <input type='text' placeholder='Enter item quantity' value={newItem.quantity} onChange={(e) => setNewItem({ ...newItem, quantity: parseInt(e.target.value) })} />
-                <input type='text' placeholder='Enter item price' value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: parseFloat(e.target.value) })} />
+                <input type='text'
+                    placeholder='Enter item name'
+                    value={newItem.name}
+                    onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} />
+                <input type='text'
+                    value={newItem.quantity}
+                    onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value !== '' ? parseInt(e.target.value) : 0 })} />
+                <input type='text'
+                    value={newItem.price}
+                    onChange={(e) => setNewItem({ ...newItem, price: e.target.value !== '' ? parseFloat(e.target.value) : 0 })} />
                 <button onClick={handleAddItem}>Add Item</button>
             </div>
         </div>
