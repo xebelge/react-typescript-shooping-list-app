@@ -7,6 +7,7 @@ import { getItem, setItem, getCategory, setCategory } from '../utils/storage';
 import { ItemProps } from 'components/Item';
 
 const HomePage: React.FC = () => {
+
     const initialItems = [
         { name: 'Apple', quantity: 5, price: 1.5 },
         { name: 'Banana', quantity: 3, price: 0.5 },
@@ -19,8 +20,9 @@ const HomePage: React.FC = () => {
     const [categories, setCategories] = useState<string[]>(initialCategories);
     const [notification, setNotification] = useState<string | null>(null);
     const [newItem, setNewItem] = useState<ItemProps>({ name: '', quantity: 0, price: 0 });
-    const [cartItems, setCartItems] = useState<ItemProps[]>([]);
     const [budget, setBudget] = useState<number>(0);
+    const [cartItems, setCartItems] = useState<ItemProps[]>([]);
+
 
     useEffect(() => {
         loadFromLocalStorage();
@@ -74,6 +76,7 @@ const HomePage: React.FC = () => {
     const saveToLocalStorage = (): void => {
         setItem('favorites', favoriteItems);
         setCategory('categories', categories);
+        setItem('cart', cartItems);
         setItem('budget', budget.toString());
         setNotification('Changes saved.');
     };
@@ -84,6 +87,9 @@ const HomePage: React.FC = () => {
 
         const savedBudget = getItem('budget');
         if (savedBudget) setBudget(parseFloat(savedBudget));
+
+        const savedCartItems = getItem('cart');
+        if (savedCartItems) setCartItems(savedCartItems);
     };
 
     const handleAddToCart = (item: ItemProps): void => {
