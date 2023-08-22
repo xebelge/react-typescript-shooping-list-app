@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
 
 
     useEffect(() => {
-        loadFromLocalStorage();
+        updateAppStateFromLocalStorage();
     }, []);
 
     const handleAddFavorite = (item: ItemProps): void => {
@@ -81,7 +81,7 @@ const HomePage: React.FC = () => {
         setNotification('Changes saved.');
     };
 
-    const loadFromLocalStorage = (): void => {
+    const updateAppStateFromLocalStorage = (): void => {
         const savedFavorites = getItem('favorites');
         if (savedFavorites) setFavoriteItems(savedFavorites);
 
