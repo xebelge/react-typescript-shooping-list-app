@@ -20,6 +20,7 @@ const HomePage: React.FC = () => {
     const [notification, setNotification] = useState<string | null>(null);
     const [newItem, setNewItem] = useState<ItemProps>({ name: '', quantity: 0, price: 0 });
     const [cartItems, setCartItems] = useState<ItemProps[]>([]);
+    const [budget, setBudget] = useState<number>(0);
 
     useEffect(() => {
         loadFromLocalStorage();
@@ -73,16 +74,26 @@ const HomePage: React.FC = () => {
     const saveToLocalStorage = (): void => {
         setItem('favorites', favoriteItems);
         setCategory('categories', categories);
+        setItem('budget', budget.toString());
+        setNotification('Changes saved.');
     };
 
     const loadFromLocalStorage = (): void => {
         const savedFavorites = getItem('favorites');
         if (savedFavorites) setFavoriteItems(savedFavorites);
+
+        const savedBudget = getItem('budget');
+        if (savedBudget) setBudget(parseFloat(savedBudget));
     };
 
     const handleAddToCart = (item: ItemProps): void => {
         setCartItems([...cartItems, item]);
         setNotification("Item added to cart.");
+    }
+
+    const isBudgetExceeded = (): boolean => {
+        const cartTotalPrice = cartItems.reduce((total, item) => total + item.quantity * item.price, 0);
+        return cartTotalPrice > budget;
     }
 
     return (
@@ -113,8 +124,22 @@ const HomePage: React.FC = () => {
                     ))}
                 </ul>
                 <p>Overall Price: ${cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}</p>
+                {budget > 0 && (
+                    <p className={isBudgetExceeded() ? 'budget-exceeded' : 'budget-not-exceeded'}>
+                        {isBudgetExceeded() ? 'Budget Exceeded!' : 'Budget Not Exceeded'}
+                    </p>
+                )}
             </div>
-            <div>
+            <div className="budget">
+                <h2>Set Budget</h2>
+                <input
+                    type="number"
+                    placeholder="Budget"
+                    value={budget}
+                    onChange={(e) => setBudget(parseFloat(e.target.value))}
+                />
+            </div>
+            <div className="add-item">
                 <h2>Add New Item</h2>
                 <input
                     type="text"
