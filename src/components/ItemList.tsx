@@ -11,7 +11,7 @@ interface ItemListProps {
 const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onAddToCart }) => {
     return (
         <div className="item-list">
-            <h2>Shopping List</h2>
+            <h2>Shopping Item List</h2>
             <ul>
                 {items.map((item, index) => (
                     <li key={index}>
