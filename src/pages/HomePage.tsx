@@ -102,6 +102,8 @@ const HomePage: React.FC = () => {
 
         const savedCartItems = getItem('cart');
         if (savedCartItems) setCartItems(savedCartItems);
+
+        setIsChangesMade(false);
     };
 
     const handleAddToCart = (item: ItemProps): void => {
