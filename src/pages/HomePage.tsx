@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
             setItem('categories', categories);
             setItem('cart', cartItems);
             setItem('budget', budget.toString());
-            setItem('items', items); // Save items to localStorage
+            setItem('items', items); 
             notify('Changes saved.');
             setIsChangesMade(false);
         } else {
