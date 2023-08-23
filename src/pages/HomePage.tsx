@@ -25,10 +25,13 @@ const HomePage: React.FC = () => {
 
     useEffect(() => {
         updateAppStateFromLocalStorage();
+        setIsChangesMade(false);
     }, []);
 
     const addItem = (item: ItemProps): void => {
-        setItems([...items, item]);
+        const newItemWithCategory = { ...item, category: item.category || '' };
+        setItems([...items, newItemWithCategory]);
+        saveToLocalStorage();
     };
 
     const isValidItem = (item: ItemProps): boolean => {
@@ -60,7 +63,7 @@ const HomePage: React.FC = () => {
         setIsChangesMade(true);
     };
 
-    const handleAddItem = (): void => {
+    const handleAddItemtoCategory = (): void => {
         if (isValidItem(newItem)) {
             const newItemWithCategory = { ...newItem, category: newItem.category || '' };
             addItem(newItemWithCategory);
@@ -103,6 +106,9 @@ const HomePage: React.FC = () => {
 
         const savedCartItems = getItem('cart');
         if (savedCartItems) setCartItems(savedCartItems);
+
+        const savedCategories = getItem('categories');
+        if (savedCategories) setCategories(savedCategories);
     };
 
     const handleAddToCart = (item: ItemProps): void => {
@@ -243,7 +249,7 @@ const HomePage: React.FC = () => {
                     value={newItem.category || ''}
                     onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
                 />
-                <button onClick={handleAddItem}>Add Item</button>
+                <button onClick={handleAddItemtoCategory}>Add Item</button>
             </div>
         </div>
     );
