@@ -19,7 +19,7 @@ const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onA
                         {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}
                         <button onClick={() => onAddFavorite(item)}>Add to Favorites</button>
                         <button onClick={() => onRemove(index)}>Remove</button>
-                        <button onClick={() => onAddToCart(item)}>Add Cart</button>
+                        <button onClick={() => onAddToCart(item)}>Add to Cart</button>
                     </li>
                 ))}
             </ul>
