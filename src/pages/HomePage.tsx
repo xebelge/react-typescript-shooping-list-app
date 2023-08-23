@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
         setIsChangesMade(false);
     }, []);
 
+
     const addItem = (item: ItemProps): void => {
         const newItemWithCategory = { ...item, category: item.category || '' };
         setItems([...items, newItemWithCategory]);
@@ -90,6 +91,7 @@ const HomePage: React.FC = () => {
             setItem('categories', categories);
             setItem('cart', cartItems);
             setItem('budget', budget.toString());
+            setItem('items', items); // Save items to localStorage
             notify('Changes saved.');
             setIsChangesMade(false);
         } else {
@@ -98,17 +100,17 @@ const HomePage: React.FC = () => {
     };
 
     const updateAppStateFromLocalStorage = (): void => {
-        const savedFavorites = getItem('favorites');
-        if (savedFavorites) setFavoriteItems(savedFavorites);
-
-        const savedBudget = getItem('budget');
-        if (savedBudget) setBudget(parseFloat(savedBudget));
-
+        const savedItems = getItem('items');
+        const savedFavoriteItems = getItem('favorites');
+        const savedCategories = getCategory('categories');
+        const savedBudget = parseFloat(getItem('budget')) || 0;
         const savedCartItems = getItem('cart');
-        if (savedCartItems) setCartItems(savedCartItems);
 
-        const savedCategories = getItem('categories');
-        if (savedCategories) setCategories(savedCategories);
+        setItems(savedItems || initialItems);
+        setFavoriteItems(savedFavoriteItems || []);
+        setCategories(savedCategories || initialCategories);
+        setBudget(savedBudget);
+        setCartItems(savedCartItems || []);
     };
 
     const handleAddToCart = (item: ItemProps): void => {
