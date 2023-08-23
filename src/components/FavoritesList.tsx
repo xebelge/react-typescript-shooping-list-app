@@ -4,9 +4,10 @@ import Item, { ItemProps } from './Item';
 interface FavoritesListProps {
     favoriteItems: ItemProps[];
     onRemove: (index: number) => void;
+    onAddToCart: (item: ItemProps) => void;
 }
 
-const FavoritesList: React.FC<FavoritesListProps> = ({ favoriteItems, onRemove }) => {
+const FavoritesList: React.FC<FavoritesListProps> = ({ favoriteItems, onRemove, onAddToCart }) => {
     return (
         <div className="favorites-list">
             <h2>Favorite Items</h2>
@@ -18,6 +19,7 @@ const FavoritesList: React.FC<FavoritesListProps> = ({ favoriteItems, onRemove }
                         <li key={index}>
                             <Item {...item} />
                             <button onClick={() => onRemove(index)}>Remove</button>
+                            <button onClick={() => onAddToCart(item)}>Add to Cart</button> {/* Added this button */}
                         </li>
                     ))}
                 </ul>

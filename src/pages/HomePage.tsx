@@ -157,7 +157,7 @@ const HomePage: React.FC = () => {
                 onAddCategory={handleAddCategory}
                 onRemoveCategory={handleRemoveCategory}
             />
-            <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} />
+            <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} onAddToCart={handleAddToCart} />
             <ItemList
                 items={items}
                 onAddFavorite={handleAddFavorite}
