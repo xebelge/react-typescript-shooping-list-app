@@ -1,4 +1,3 @@
-// ItemList.tsx
 import React from 'react';
 import Item, { ItemProps } from './Item';
 
@@ -7,13 +6,14 @@ interface ItemListProps {
     onAddFavorite: (item: ItemProps) => void;
     onRemove: (index: number) => void;
     onAddToCart: (item: ItemProps) => void;
+    onRemoveCategory: (category: string) => void;
 }
 
 interface CategorizedItems {
     [category: string]: ItemProps[];
 }
 
-const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onAddToCart }) => {
+const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onAddToCart, onRemoveCategory }) => {
     const categorizedItems: CategorizedItems = {};
 
     items.forEach(item => {
@@ -47,11 +47,15 @@ const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onA
                                 </li>
                             ))}
                         </ul>
+                        <div className="category-actions">
+                            <button onClick={() => onRemoveCategory(category)}>Remove Category</button>
+                        </div>
                     </li>
                 ))}
             </ul>
         </div>
     );
 };
+
 
 export default ItemList;
