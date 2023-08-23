@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ItemList from '../components/ItemList';
-import CategoryList from '../components/CategoryList';
 import FavoritesList from '../components/FavoritesList';
 import Notification from '../components/Notification';
 import { getItem, setItem, getCategory, setCategory } from '../utils/storage';
@@ -62,7 +61,7 @@ const HomePage: React.FC = () => {
 
     const handleAddItem = (): void => {
         if (isValidItem(newItem)) {
-            const newItemWithCategory = { ...newItem, category: newItem.category || 'Uncategorized' };
+            const newItemWithCategory = { ...newItem, category: newItem.category || '' };
             addItem(newItemWithCategory);
             notify('Item added.');
             setIsChangesMade(true);
@@ -78,21 +77,6 @@ const HomePage: React.FC = () => {
         const updatedFavorites = favoriteItems.filter(favItem => favItem.name !== items[index].name);
         setFavoriteItems(updatedFavorites);
         notify('Item removed.');
-        setIsChangesMade(true);
-    };
-
-    const handleAddCategory = (category: string): void => {
-        if (!categories.includes(category)) {
-            setCategories([...categories, category]);
-            setIsChangesMade(true);
-        } else {
-            setNotification('Category already exists.');
-        }
-    };
-
-    const handleRemoveCategory = (index: number): void => {
-        const updatedCategories = categories.filter((_, i) => i !== index);
-        setCategories(updatedCategories);
         setIsChangesMade(true);
     };
 
@@ -156,11 +140,6 @@ const HomePage: React.FC = () => {
             <h1>Targeted Shopping List</h1>
             <button onClick={saveToLocalStorage}>Save Changes</button>
             <Notification message={notification || ''} type={notification ? 'success' : 'error'} />
-            <CategoryList
-                categories={categories}
-                onAddCategory={handleAddCategory}
-                onRemoveCategory={handleRemoveCategory}
-            />
             <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} onAddToCart={handleAddToCart} />
             <ItemList
                 items={items}
