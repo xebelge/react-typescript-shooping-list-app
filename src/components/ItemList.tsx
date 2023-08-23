@@ -15,6 +15,7 @@ const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onA
             <ul>
                 {items.map((item, index) => (
                     <li key={index}>
+                        {item.category && <div><strong>Category:</strong> {item.category}</div>}
                         {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)}
                         <button onClick={() => onAddFavorite(item)}>Add to Favorites</button>
                         <button onClick={() => onRemove(index)}>Remove</button>
