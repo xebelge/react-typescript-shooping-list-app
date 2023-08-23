@@ -7,13 +7,12 @@ import { getItem, setItem, getCategory, setCategory } from '../utils/storage';
 import { ItemProps } from 'components/Item';
 
 const HomePage: React.FC = () => {
-
-    const initialItems = [
+    const initialItems: ItemProps[] = [
         { name: 'Apple', quantity: 5, price: 1.5 },
         { name: 'Banana', quantity: 3, price: 0.5 },
     ];
 
-    const initialCategories = getCategory('categories') || ['Fruits', 'Vegetables', 'Cleaning Products'];
+    const initialCategories: string[] = getCategory('categories') || ['Fruits', 'Vegetables', 'Cleaning Products'];
 
     const [items, setItems] = useState<ItemProps[]>(initialItems);
     const [favoriteItems, setFavoriteItems] = useState<ItemProps[]>([]);
@@ -22,38 +21,37 @@ const HomePage: React.FC = () => {
     const [newItem, setNewItem] = useState<ItemProps>({ name: '', quantity: 0, price: 0 });
     const [budget, setBudget] = useState<number>(0);
     const [cartItems, setCartItems] = useState<ItemProps[]>([]);
-    const [isChangeMade, setIsChangesMade] = useState<boolean>(false);
-
+    const [isChangesMade, setIsChangesMade] = useState<boolean>(false);
 
     useEffect(() => {
-        updateAppStateFromLocalStorage();
+        loadAppStateFromLocalStorage();
     }, []);
 
     const handleAddFavorite = (item: ItemProps): void => {
         if (!favoriteItems.some(favItem => favItem.name === item.name)) {
             setFavoriteItems([...favoriteItems, item]);
-            setNotification('Item added to favorites.');
+            notify('Item added to favorites.');
             setIsChangesMade(true);
         } else {
-            setNotification('Item is already in favorites.');
+            notify('Item is already in favorites.');
         }
     };
 
     const handleAddItem = (): void => {
-        if (newItem.name !== '' && newItem.quantity > 0 && newItem.price > 0) {
-            setItems([...items, newItem]);
-            setNotification('Item added.');
+        if (isValidItem(newItem)) {
+            addItem(newItem);
+            notify('Item added.');
             setIsChangesMade(true);
-            setNewItem({ name: '', quantity: 0, price: 0 }); // Reset newItem after adding
+            resetNewItem();
         } else {
-            setNotification('Please fill in all fields and enter valid values.');
+            notify('Please fill in all fields and enter valid values.');
         }
     };
 
     const handleRemoveFavorite = (index: number): void => {
         const updatedFavorites = favoriteItems.filter((_, i) => i !== index);
         setFavoriteItems(updatedFavorites);
-        setNotification('Item removed from favorites.');
+        notify('Item removed from favorites.');
         setIsChangesMade(true);
     };
 
@@ -61,11 +59,10 @@ const HomePage: React.FC = () => {
         const updatedItems = items.filter((_, i) => i !== index);
         setItems(updatedItems);
 
-        // Remove the item from favorites if it exists there
         const updatedFavorites = favoriteItems.filter(favItem => favItem.name !== items[index].name);
         setFavoriteItems(updatedFavorites);
 
-        setNotification('Item removed.');
+        notify('Item removed.');
         setIsChangesMade(true);
     };
 
@@ -80,35 +77,24 @@ const HomePage: React.FC = () => {
         setIsChangesMade(true);
     };
 
-    const saveToLocalStorage = (): void => {
-        if (isChangeMade) {
-            setItem('favorites', favoriteItems);
-            setCategory('categories', categories);
-            setItem('cart', cartItems);
-            setItem('budget', budget.toString());
-            setNotification('Changes saved.');
+    const saveChanges = (): void => {
+        if (isChangesMade) {
+            persistChanges();
             setIsChangesMade(false);
         } else {
-            setNotification('No changes made.');
+            notify('No changes made.');
         }
     };
 
-    const updateAppStateFromLocalStorage = (): void => {
-        const savedFavorites = getItem('favorites');
-        if (savedFavorites) setFavoriteItems(savedFavorites);
-
-        const savedBudget = getItem('budget');
-        if (savedBudget) setBudget(parseFloat(savedBudget));
-
-        const savedCartItems = getItem('cart');
-        if (savedCartItems) setCartItems(savedCartItems);
-
-        setIsChangesMade(false);
+    const loadAppStateFromLocalStorage = (): void => {
+        loadFavorites();
+        loadBudget();
+        loadCartItems();
     };
 
     const handleAddToCart = (item: ItemProps): void => {
         setCartItems([...cartItems, item]);
-        setNotification("Item added to cart.");
+        notify("Item added to cart.");
         setIsChangesMade(true);
     }
 
@@ -121,14 +107,14 @@ const HomePage: React.FC = () => {
         }
 
         setCartItems(updatedCartItems);
-        setNotification("Item removed from cart.");
+        notify("Item removed from cart.");
         setIsChangesMade(true);
     };
 
-    const handleItemRemoveFromCart = (index: number): void => {
+    const handleRemoveAllItemsFromCart = (index: number): void => {
         const updatedCartItems = cartItems.filter((_, i) => i !== index);
         setCartItems(updatedCartItems);
-        setNotification("Item overall removed from cart.");
+        notify("Item overall removed from cart.");
         setIsChangesMade(true);
     };
 
@@ -137,10 +123,65 @@ const HomePage: React.FC = () => {
         return cartTotalPrice > budget;
     }
 
+    const isValidItem = (item: ItemProps): boolean => {
+        return item.name !== '' && item.quantity > 0 && item.price > 0;
+    };
+
+    const addItem = (item: ItemProps): void => {
+        setItems([...items, item]);
+    };
+
+    const resetNewItem = (): void => {
+        setNewItem({ name: '', quantity: 0, price: 0 });
+    };
+
+    const persistChanges = (): void => {
+        persistFavorites();
+        persistCategories();
+        persistCart();
+        persistBudget();
+        notify('Changes saved.');
+    };
+
+    const persistFavorites = (): void => {
+        setItem('favorites', favoriteItems);
+    };
+
+    const persistCategories = (): void => {
+        setCategory('categories', categories);
+    };
+
+    const persistCart = (): void => {
+        setItem('cart', cartItems);
+    };
+
+    const persistBudget = (): void => {
+        setItem('budget', budget.toString());
+    };
+
+    const loadFavorites = (): void => {
+        const savedFavorites = getItem('favorites');
+        if (savedFavorites) setFavoriteItems(savedFavorites);
+    };
+
+    const loadBudget = (): void => {
+        const savedBudget = getItem('budget');
+        if (savedBudget) setBudget(parseFloat(savedBudget));
+    };
+
+    const loadCartItems = (): void => {
+        const savedCartItems = getItem('cart');
+        if (savedCartItems) setCartItems(savedCartItems);
+    };
+
+    const notify = (message: string): void => {
+        setNotification(message);
+    };
+
     return (
         <div className="home-page">
             <h1>Targeted Shopping List</h1>
-            <button onClick={saveToLocalStorage}>Save Changes</button>
+            <button onClick={saveChanges}>Save Changes</button>
             <Notification message={notification || ''} type={notification ? 'success' : 'error'} />
             <CategoryList
                 categories={categories}
@@ -161,7 +202,7 @@ const HomePage: React.FC = () => {
                         <li key={index}>
                             {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)} -
                             Total Price: ${(item.quantity * item.price).toFixed(2)}
-                            <button onClick={() => handleItemRemoveFromCart(index)}>Remove All Item</button>
+                            <button onClick={() => handleRemoveAllItemsFromCart(index)}>Remove All Item</button>
                             <button onClick={() => handleRemoveSingleItemFromCart(index)}>Remove One Item</button>
                         </li>
                     ))}
