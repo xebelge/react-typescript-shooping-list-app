@@ -82,8 +82,12 @@ const HomePage: React.FC = () => {
     };
 
     const handleAddCategory = (category: string): void => {
-        setCategories([...categories, category]);
-        setIsChangesMade(true);
+        if (!categories.includes(category)) {
+            setCategories([...categories, category]);
+            setIsChangesMade(true);
+        } else {
+            setNotification('Category already exists.');
+        }
     };
 
     const handleRemoveCategory = (index: number): void => {
