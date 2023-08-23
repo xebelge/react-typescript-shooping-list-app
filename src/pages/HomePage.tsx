@@ -97,6 +97,24 @@ const HomePage: React.FC = () => {
         setNotification("Item added to cart.");
     }
 
+    const handleRemoveSingleItemFromCart = (index: number): void => {
+        const updatedCartItems = [...cartItems];
+        updatedCartItems[index].quantity -= 1;
+
+        if (updatedCartItems[index].quantity <= 0) {
+            updatedCartItems.splice(index, 1);
+        }
+
+        setCartItems(updatedCartItems);
+        setNotification("Item removed from cart.");
+    };
+
+    const handleItemRemoveFromCart = (index: number): void => {
+        const updatedCartItems = cartItems.filter((_, i) => i !== index);
+        setCartItems(updatedCartItems);
+        setNotification("Item overall removed from cart.");
+    };
+
     const isBudgetExceeded = (): boolean => {
         const cartTotalPrice = cartItems.reduce((total, item) => total + item.quantity * item.price, 0);
         return cartTotalPrice > budget;
@@ -126,6 +144,8 @@ const HomePage: React.FC = () => {
                         <li key={index}>
                             {item.name} - Quantity: {item.quantity} - Price: ${item.price.toFixed(2)} -
                             Total Price: ${(item.quantity * item.price).toFixed(2)}
+                            <button onClick={() => handleItemRemoveFromCart(index)}>Remove All Item</button>
+                            <button onClick={() => handleRemoveSingleItemFromCart(index)}>Remove One Item</button>
                         </li>
                     ))}
                 </ul>
