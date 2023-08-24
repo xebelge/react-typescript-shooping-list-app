@@ -17,18 +17,10 @@ const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onA
     const categorizedItems: CategorizedItems = {};
 
     items.forEach(item => {
-        if (item.category) {
-            if (!categorizedItems[item.category]) {
-                categorizedItems[item.category] = [];
-            }
-            categorizedItems[item.category].push(item);
-        } else {
-            if (!categorizedItems['Uncategorized']) {
-                categorizedItems['Uncategorized'] = [];
-            }
-            categorizedItems['Uncategorized'].push(item);
-        }
-    });
+        const category = item.category || 'Uncategorized';
+        categorizedItems[category] = categorizedItems[category] || [];
+        categorizedItems[category].push(item);
+    });    
 
     return (
         <div className="item-list">
