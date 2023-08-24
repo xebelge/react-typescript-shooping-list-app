@@ -54,7 +54,7 @@ const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onA
             {/* Display items without a category */}
             <ul key="uncategorized" className="category-list">
                 <li className="category-item">
-                    <h3>Other</h3>
+                    <h3>Other Items</h3>
                     <ul>
                         {uncategorizedItems.map((item, index) => (
                             <li key={index}>
