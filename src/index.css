@@ -13,6 +13,10 @@ button {
   padding: 0;
 }
 
+h1{
+  color: rgb(5, 12, 114);
+}
+
 body {
   font-family: Arial, sans-serif;
 }
