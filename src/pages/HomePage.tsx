@@ -170,6 +170,7 @@ const HomePage: React.FC = () => {
         setItems(items.map(item => item.category === category ? { ...item, category: '' } : item));
         setIsChangesMade(true);
         setItem('categories', updatedCategories);
+        notify('Category deleted.');
     };
 
     return (
