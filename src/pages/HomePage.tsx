@@ -290,7 +290,7 @@ const HomePage: React.FC = () => {
                 />
                 <button onClick={handleAddCategory}>Add Category</button>
             </div>
-            <button onClick={saveToLocalStorage}>Save Changes</button>
+            <button onClick={saveToLocalStorage} style={{ marginTop: '10px' }}>Save Changes</button>
         </div>
     );
 };
