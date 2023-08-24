@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
             setItem('categories', categories);
             setItem('cart', cartItems);
             setItem('budget', budget.toString());
-            setItem('items', items); 
+            setItem('items', items);
             notify('Changes saved.');
             setIsChangesMade(false);
         } else {
@@ -114,7 +114,16 @@ const HomePage: React.FC = () => {
     };
 
     const handleAddToCart = (item: ItemProps): void => {
-        setCartItems([...cartItems, item]);
+        const existingCartItemIndex = cartItems.findIndex(cartItem => cartItem.name === item.name);
+
+        if (existingCartItemIndex !== -1) {
+            const updatedCartItems = [...cartItems];
+            updatedCartItems[existingCartItemIndex].quantity += 1;
+            setCartItems(updatedCartItems);
+        } else {
+            setCartItems([...cartItems, { ...item, quantity: 1 }]);
+        }
+
         notify("Item added to cart.");
         setIsChangesMade(true);
     };
