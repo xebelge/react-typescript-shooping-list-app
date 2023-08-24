@@ -28,6 +28,11 @@ const HomePage: React.FC = () => {
         setIsChangesMade(false);
     }, []);
 
+    useEffect(() => {
+        if (budget !== parseFloat(getItem('budget'))) {
+            setIsChangesMade(true);
+        }
+    }, [budget]);
 
     const addItem = (item: ItemProps): void => {
         const newItemWithCategory = { ...item, category: item.category || '' };
