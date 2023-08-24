@@ -71,13 +71,21 @@ const HomePage: React.FC = () => {
 
     const handleAddItemtoCategory = (): void => {
         if (isValidItem(newItem)) {
-            const newItemWithCategory = { ...newItem, category: newItem.category || '' };
+            const existingItemIndex = items.findIndex(item => item.name === newItem.name);
 
-            if (newItemWithCategory.category && !categories.includes(newItemWithCategory.category)) {
-                setCategories([...categories, newItemWithCategory.category]);
+            if (existingItemIndex !== -1) {
+                const updatedItems = [...items];
+                updatedItems[existingItemIndex].quantity += newItem.quantity;
+                setItems(updatedItems);
+            } else {
+                const newItemWithCategory = { ...newItem, category: newItem.category || '' };
+
+                if (newItemWithCategory.category && !categories.includes(newItemWithCategory.category)) {
+                    setCategories([...categories, newItemWithCategory.category]);
+                }
+
+                addItem(newItemWithCategory);
             }
-
-            addItem(newItemWithCategory);
 
             notify('Item added.');
             setIsChangesMade(true);
@@ -86,6 +94,7 @@ const HomePage: React.FC = () => {
             notify('Please fill in all fields and enter valid values.');
         }
     };
+
 
     const handleRemoveItem = (index: number): void => {
         const updatedItems = items.filter((_, i) => i !== index);
