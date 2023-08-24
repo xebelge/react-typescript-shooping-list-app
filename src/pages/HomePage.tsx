@@ -186,32 +186,36 @@ const HomePage: React.FC = () => {
                 categories={categories}
             />
             <div className="cart">
-                <h2>Cart</h2>
-                <ul>
-                    {cartItems.map((item, index) => (
-                        <li key={index}>
-                            {item.name} - {item.category && `Category: ${item.category} -`} Quantity: {item.quantity} - Price: ${item.price.toFixed(2)} -
-                            Total Price: ${(item.quantity * item.price).toFixed(2)}
-                            <button onClick={() => handleItemRemoveFromCart(index)}>Remove All Item</button>
-                            <button onClick={() => handleRemoveSingleItemFromCart(index)}>Remove One Item</button>
-                        </li>
-                    ))}
-                </ul>
-                <p>Overall Price: ${cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}</p>
-                {budget > 0 && (
-                    <p className={isBudgetExceeded() ? 'budget-exceeded' : 'budget-not-exceeded'}>
-                        {isBudgetExceeded() ? 'Budget Exceeded!' : 'Budget Not Exceeded'}
-                    </p>
-                )}
+                <div className='cart-container'>
+                    <h2>Cart</h2>
+                    <ul>
+                        {cartItems.map((item, index) => (
+                            <li key={index}>
+                                {item.name} - {item.category && `Category: ${item.category} -`} Quantity: {item.quantity} - Price: ${item.price.toFixed(2)} -
+                                Total Price: ${(item.quantity * item.price).toFixed(2)}
+                                <button onClick={() => handleItemRemoveFromCart(index)}>Remove All Item</button>
+                                <button onClick={() => handleRemoveSingleItemFromCart(index)}>Remove One Item</button>
+                            </li>
+                        ))}
+                    </ul>
+                    <p>Overall Price: ${cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}</p>
+                    {budget > 0 && (
+                        <p className={isBudgetExceeded() ? 'budget-exceeded' : 'budget-not-exceeded'}>
+                            {isBudgetExceeded() ? 'Budget Exceeded!' : 'Budget Not Exceeded'}
+                        </p>
+                    )}
+                </div>
             </div>
-            <div className="budget">
-                <h2>Set Budget</h2>
-                <input
-                    type="number"
-                    placeholder="Budget"
-                    value={budget}
-                    onChange={(e) => setBudget(parseFloat(e.target.value))}
-                />
+            <div className='budget-container'>
+                <div className="budget">
+                    <h2>Set Budget</h2>
+                    <input
+                        type="number"
+                        placeholder="Budget"
+                        value={budget}
+                        onChange={(e) => setBudget(parseFloat(e.target.value))}
+                    />
+                </div>
             </div>
             <div className="add-item">
                 <h2>Add New Item</h2>
