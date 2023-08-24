@@ -7,30 +7,31 @@ interface ItemListProps {
     onRemove: (index: number) => void;
     onAddToCart: (item: ItemProps) => void;
     onRemoveCategory: (category: string) => void;
+    categories: string[];
 }
 
 interface CategorizedItems {
     [category: string]: ItemProps[];
 }
 
-const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onAddToCart, onRemoveCategory }) => {
+const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onAddToCart, onRemoveCategory, categories }) => {
     const categorizedItems: CategorizedItems = {};
 
     items.forEach(item => {
         const category = item.category || 'Uncategorized';
         categorizedItems[category] = categorizedItems[category] || [];
         categorizedItems[category].push(item);
-    });    
+    });
 
     return (
         <div className="item-list">
             <h2>Shopping List</h2>
-            <ul className="category-list">
-                {Object.keys(categorizedItems).map(category => (
-                    <li key={category} className="category-item">
+            {categories.map(category => (
+                <ul key={category} className="category-list">
+                    <li className="category-item">
                         <h3>{category !== 'Uncategorized' ? category : 'Other'}</h3>
                         <ul>
-                            {categorizedItems[category].map((item, index) => (
+                            {categorizedItems[category]?.map((item, index) => (
                                 <li key={index}>
                                     <Item {...item} />
                                     <button onClick={() => onAddFavorite(item)}>Add to Favorites</button>
@@ -43,11 +44,10 @@ const ItemList: React.FC<ItemListProps> = ({ items, onAddFavorite, onRemove, onA
                             <button onClick={() => onRemoveCategory(category)}>Remove Category</button>
                         </div>
                     </li>
-                ))}
-            </ul>
+                </ul>
+            ))}
         </div>
     );
 };
-
 
 export default ItemList;

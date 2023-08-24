@@ -154,13 +154,13 @@ const HomePage: React.FC = () => {
     };
 
     const handleAddCategory = (): void => {
-        if (newCategory.trim() !== '' && !categories.includes(newCategory)) {
+        if (newCategory.trim() !== '') {
             setCategories([...categories, newCategory]);
-            setItem('categories', [...categories, newCategory]);
-            setIsChangesMade(true);
             setNewCategory('');
+            setIsChangesMade(true);
+            notify('Category added.');
         } else {
-            setNotification('Please enter a valid and unique category name.');
+            notify('Please enter a valid category name.');
         }
     };
 
@@ -172,11 +172,9 @@ const HomePage: React.FC = () => {
         setItem('categories', updatedCategories);
     };
 
-
     return (
         <div className="home-page">
             <h1>Targeted Shopping List</h1>
-            <button onClick={saveToLocalStorage}>Save Changes</button>
             <Notification message={notification || ''} type={notification ? 'success' : 'error'} />
             <FavoritesList favoriteItems={favoriteItems} onRemove={handleRemoveFavorite} onAddToCart={handleAddToCart} />
             <ItemList
@@ -185,17 +183,8 @@ const HomePage: React.FC = () => {
                 onRemove={handleRemoveItem}
                 onAddToCart={handleAddToCart}
                 onRemoveCategory={handleRemoveCategory}
+                categories={categories}
             />
-            <div className="add-category">
-                <h2>Add New Category</h2>
-                <input
-                    type="text"
-                    placeholder="Category name"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                />
-                <button onClick={handleAddCategory}>Add Category</button>
-            </div>
             <div className="cart">
                 <h2>Cart</h2>
                 <ul>
@@ -262,6 +251,17 @@ const HomePage: React.FC = () => {
                 />
                 <button onClick={handleAddItemtoCategory}>Add Item</button>
             </div>
+            <div className="add-category">
+                <h2>Add New Category</h2>
+                <input
+                    type="text"
+                    placeholder="Category name"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                />
+                <button onClick={handleAddCategory}>Add Category</button>
+            </div>
+            <button onClick={saveToLocalStorage}>Save Changes</button>
         </div>
     );
 };
