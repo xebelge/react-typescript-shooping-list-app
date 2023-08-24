@@ -72,7 +72,13 @@ const HomePage: React.FC = () => {
     const handleAddItemtoCategory = (): void => {
         if (isValidItem(newItem)) {
             const newItemWithCategory = { ...newItem, category: newItem.category || '' };
+
+            if (newItemWithCategory.category && !categories.includes(newItemWithCategory.category)) {
+                setCategories([...categories, newItemWithCategory.category]);
+            }
+
             addItem(newItemWithCategory);
+
             notify('Item added.');
             setIsChangesMade(true);
             resetNewItem();
