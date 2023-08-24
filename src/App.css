@@ -2,6 +2,7 @@
   text-align: center;
   margin: auto;
   padding: 2rem;
+  color:#0e1c7b;
 }
 
 body {
@@ -17,16 +18,18 @@ body {
 }
 
 .category-list {
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
   padding: 1rem;
   margin-bottom: 1rem;
+  background-color: #f7f7f7;
 }
 
 .favorites-list,
 .recent-items-list {
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
   padding: 1rem;
   margin-bottom: 1rem;
+  background-color: #f7f7f7;
 }
 
 .item-list {
@@ -36,15 +39,16 @@ body {
 }
 
 .item {
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
   padding: 1rem;
   margin-bottom: 1rem;
+  background-color: #ffffff;
 }
 
 .notification {
   padding: 1rem;
   margin-bottom: 1rem;
-  color: #fff;
+  color: #ffffff;
   font-weight: bold;
 }
 
@@ -59,9 +63,10 @@ body {
 button {
   padding: 0.5rem 1rem;
   background-color: #007bff;
-  color: #fff;
+  color: #ffffff;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
 button:hover {
