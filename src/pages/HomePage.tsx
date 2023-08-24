@@ -213,7 +213,12 @@ const HomePage: React.FC = () => {
                         type="number"
                         placeholder="Budget"
                         value={budget}
-                        onChange={(e) => setBudget(parseFloat(e.target.value))}
+                        onChange={(e) => {
+                            const enteredValue = parseFloat(e.target.value);
+                            if (!isNaN(enteredValue) && enteredValue >= 0) {
+                                setBudget(enteredValue);
+                            }
+                        }}
                     />
                 </div>
             </div>
