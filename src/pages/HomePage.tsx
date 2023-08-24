@@ -252,23 +252,23 @@ const HomePage: React.FC = () => {
                 />
                 <input
                     type="number"
-                    placeholder="Quantity"
+                    placeholder="Enter quantity..."
                     value={newItem.quantity}
                     onChange={(e) =>
                         setNewItem({
                             ...newItem,
-                            quantity: e.target.value !== '' ? parseInt(e.target.value) : 0,
+                            quantity: Math.max(0, parseInt(e.target.value)),
                         })
                     }
                 />
                 <input
                     type="number"
-                    placeholder="Price"
+                    placeholder="Enter price..."
                     value={newItem.price}
                     onChange={(e) =>
                         setNewItem({
                             ...newItem,
-                            price: e.target.value !== '' ? parseFloat(e.target.value) : 0,
+                            price: Math.max(0, parseFloat(e.target.value)),
                         })
                     }
                 />
