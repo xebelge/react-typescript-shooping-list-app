@@ -54,7 +54,7 @@ article {
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #007bff;
+  background-color: #247ad6;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -63,7 +63,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #083f7a;
 }
 
 ul {
