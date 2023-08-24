@@ -4,6 +4,13 @@
   padding: 2rem;
 }
 
+body {
+  background-image: url('../public/images/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 .home-page {
   max-width: 800px;
   margin: 0 auto;
